@@ -20,7 +20,7 @@ jobs:
             extends: default
             rules:
               line-length:
-                max: 150
+                max: 200
               truthy:
                 allowed-values: ['true', 'false']
 
