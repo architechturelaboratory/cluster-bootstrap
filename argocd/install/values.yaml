@@ -1,0 +1,38 @@
+global:
+  domain: argocd.dev.local
+
+server:
+  replicas: 1
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: argocd.dev.local
+    tls: true
+    annotations:
+      cert-manager.io/cluster-issuer: selfsigned-issuer
+
+configs:
+  params:
+    server.insecure: false
+  cm:
+    # k3s local dev — kısa sync intervalleri
+    timeout.reconciliation: 30s
+    application.instanceLabelKey: argocd.argoproj.io/app-name
+
+repoServer:
+  replicas: 1
+
+applicationSet:
+  replicas: 1
+
+redis:
+  enabled: true
+
+# Dev ortamı için küçük resource limitleri
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

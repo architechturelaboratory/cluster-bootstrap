@@ -1,0 +1,95 @@
+# Dev ortamı — HA kapalı, düşük resource'lar
+prometheusOperator:
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+prometheus:
+  prometheusSpec:
+    replicas: 1
+    retention: 7d
+    retentionSize: 5GB
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path  # k3s default storage class
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+    # k3s node'larını da izle
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+
+grafana:
+  enabled: true
+  replicas: 1
+  adminPassword: "dev-admin-123"  # UYARI: prod'da secret ile değiştir
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - grafana.dev.local
+    tls:
+      - secretName: grafana-tls
+        hosts:
+          - grafana.dev.local
+    annotations:
+      cert-manager.io/cluster-issuer: selfsigned-issuer
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 256Mi
+  # k3s için persistence
+  persistence:
+    enabled: true
+    storageClassName: local-path
+    size: 2Gi
+  # Yararlı default dashboard'lar
+  defaultDashboardsEnabled: true
+  defaultDashboardsTimezone: Europe/Istanbul
+
+alertmanager:
+  enabled: true
+  alertmanagerSpec:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+
+# k3s node exporter — her node'da çalışır
+nodeExporter:
+  enabled: true
+
+# k3s kube-state-metrics
+kubeStateMetrics:
+  enabled: true
+
+# k3s'de etcd farklı çalışır, bu'ları kapat
+kubeEtcd:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false

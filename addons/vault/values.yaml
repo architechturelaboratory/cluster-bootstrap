@@ -1,0 +1,54 @@
+global:
+  enabled: true
+
+server:
+  # Dev mode: veriler bellekte tutulur, restart'ta sıfırlanır.
+  # Kalıcı veri istiyorsan dev: false yap ve storage bölümünü aç.
+  dev:
+    enabled: true
+    devRootToken: "root"   # Bu token ile her şeye erişebilirsin — sadece dev!
+
+  # Dev mode'da tek replica yeterli
+  replicas: 1
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - host: vault.dev.local
+        paths:
+          - /
+    tls:
+      - secretName: vault-tls
+        hosts:
+          - vault.dev.local
+    annotations:
+      cert-manager.io/cluster-issuer: selfsigned-issuer
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+  # Dev mode'da storage config gerekmez.
+  # Production için şu bloğu aç:
+  # dataStorage:
+  #   enabled: true
+  #   size: 5Gi
+  #   storageClass: local-path
+
+# UI'yi aç — vault.dev.local üzerinden erişilebilir
+ui:
+  enabled: true
+
+# HA kapalı — dev için tek node yeterli
+ha:
+  enabled: false
+
+# Vault Agent Injector — pod'lara otomatik secret inject eder
+# ESO kullandığımız için buna gerek yok, kapalı
+injector:
+  enabled: false

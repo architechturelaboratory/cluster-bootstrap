@@ -1,0 +1,33 @@
+installCRDs: true
+
+# Dev ortamı — tek replica yeterli
+replicaCount: 1
+
+# k3s üzerinde çalışırken gerekli
+extraArgs:
+  - --dns01-recursive-nameservers-only
+  - --dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+webhook:
+  replicaCount: 1
+
+cainjector:
+  replicaCount: 1
+
+# Selfsigned ClusterIssuer — dev için yeterli
+# Production'da Let's Encrypt ile değiştir
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-issuer
+spec:
+  selfSigned: {}

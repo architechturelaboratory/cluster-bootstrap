@@ -1,0 +1,42 @@
+controller:
+  replicaCount: 1
+
+  # k3s'de Traefik varsayılan olarak gelir, çakışmayı önlemek için
+  # k3s'i --disable=traefik flag'i ile kur veya traefik'i devre dışı bırak
+  ingressClassResource:
+    name: nginx
+    enabled: true
+    default: true
+
+  # k3s local dev — LoadBalancer yerine NodePort veya HostPort kullan
+  service:
+    type: LoadBalancer  # k3s kendi LoadBalancer'ını sağlar (Klipper)
+
+  # Dev için tek node'da çalışacak şekilde
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+  # Prometheus metriklerini aç
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      namespace: monitoring
+
+  config:
+    # Dev log level
+    error-log-level: warn
+    use-forwarded-headers: "true"
+
+defaultBackend:
+  enabled: false

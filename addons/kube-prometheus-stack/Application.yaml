@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+spec:
+  project: platform
+  sources:
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
+      targetRevision: 58.3.3
+      helm:
+        valueFiles:
+          - $values/addons/kube-prometheus-stack/values.yaml
+        # CRD'ler büyük olduğu için server-side apply gerekli
+        skipCrds: false
+    - repoURL: https://github.com/YOUR_ORG/cluster-bootstrap.git  # <-- TODO (values.yaml'ı benim repomdan al)
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - Replace=true

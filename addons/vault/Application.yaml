@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd # Bu kind hangi namespace'ten geliyor
+  annotations:
+    # Vault, ESO'dan önce hazır olmalı
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  project: platform
+  sources:
+    - repoURL: https://helm.releases.hashicorp.com
+      chart: vault
+      targetRevision: 0.28.0
+      helm:
+        valueFiles:
+          - $values/addons/vault/values.yaml
+    - repoURL: https://github.com/YOUR_ORG/cluster-bootstrap.git  # <-- TODO (values.yaml'ı benim repomdan al)
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vault # hangi namespace'e kurulacak
+  syncPolicy: # kimlerden sonra olacak gibi!!!
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

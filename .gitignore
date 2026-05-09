@@ -1,0 +1,10 @@
+# Helm cache
+.helm/
+charts/
+
+# Tool çıktıları
+/tmp/
+
+# OS
+.DS_Store
+Thumbs.db
