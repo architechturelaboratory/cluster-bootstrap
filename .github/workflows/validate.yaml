@@ -39,6 +39,7 @@ jobs:
         run: |
           find . -name "*.yaml" \
             -not -path "./.github/*" \
+            -not -path "*/values.yaml" \
             -not -path "./bootstrap/secrets/*" \
             | xargs kubeconform \
               -strict \
