@@ -12,7 +12,7 @@ set -euo pipefail
 
 ARGOCD_VERSION="2.10.7"
 ARGOCD_NAMESPACE="argocd"
-GITHUB_REPO="${GITHUB_REPO:-https://github.com/YOUR_ORG/cluster-bootstrap.git}"
+GITHUB_REPO="${GITHUB_REPO:-https://github.com/architechturelaboratory/cluster-bootstrap.git}"
 
 # Renk kodları
 GREEN='\033[0;32m'
@@ -89,7 +89,7 @@ apply_argocd_resources() {
 
   info "App of Apps uygulanıyor..."
   # repo URL'ini güncelle
-  sed "s|https://github.com/YOUR_ORG/cluster-bootstrap.git|${GITHUB_REPO}|g" \
+  sed "s|https://github.com/architechturelaboratory/cluster-bootstrap.git|${GITHUB_REPO}|g" \
     argocd/app-of-apps.yaml | kubectl apply -f -
 }
 

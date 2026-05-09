@@ -12,7 +12,7 @@ spec:
       helm:
         valueFiles:
           - $values/addons/ingress-nginx/values.yaml
-    - repoURL: https://github.com/YOUR_ORG/cluster-bootstrap.git  # <-- TODO (values.yaml'ı benim repomdan al)
+    - repoURL: https://github.com/architechturelaboratory/cluster-bootstrap.git  # <-- (values.yaml'ı benim repomdan al)
       targetRevision: HEAD
       ref: values
   destination:

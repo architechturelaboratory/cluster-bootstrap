@@ -14,7 +14,7 @@ spec:
           - $values/addons/kube-prometheus-stack/values.yaml
         # CRD'ler büyük olduğu için server-side apply gerekli
         skipCrds: false
-    - repoURL: https://github.com/YOUR_ORG/cluster-bootstrap.git  # <-- TODO (values.yaml'ı benim repomdan al)
+    - repoURL: https://github.com/architechturelaboratory/cluster-bootstrap.git  # <-- (values.yaml'ı benim repomdan al)
       targetRevision: HEAD
       ref: values
   destination:

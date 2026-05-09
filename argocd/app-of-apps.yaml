@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/YOUR_ORG/cluster-bootstrap.git  # <-- değiştir
+    repoURL: https://github.com/architechturelaboratory/cluster-bootstrap.git  # <-- bu repodan okuyacaksın
     targetRevision: HEAD
     path: addons
     directory:
