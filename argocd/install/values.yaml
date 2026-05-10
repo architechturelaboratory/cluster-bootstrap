@@ -10,6 +10,7 @@ server:
     tls: true
     annotations:
       cert-manager.io/cluster-issuer: selfsigned-issuer
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 
 configs:
   params:
