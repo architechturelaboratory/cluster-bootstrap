@@ -1,12 +1,5 @@
 controller:
   replicaCount: 1
-  kind: DaemonSet
-
-  hostPort:
-    enabled: true
-    ports:
-      http: 80
-      https: 443
 
   # ssl-passthrough — ArgoCD kendi TLS'ini yönetir
   extraArgs:
@@ -17,9 +10,13 @@ controller:
     enabled: true
     default: true
 
-  # k3s local dev — LoadBalancer yerine NodePort veya HostPort kullan
+  # k3d ile NodePort kullan
+  # k3d cluster create --port "80:30080@loadbalancer" --port "443:30443@loadbalancer"
   service:
-    type: LoadBalancer
+    type: NodePort
+    nodePorts:
+      http: 30080
+      https: 30443
 
   # Dev için tek node'da çalışacak şekilde
   tolerations:
