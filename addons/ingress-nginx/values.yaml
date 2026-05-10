@@ -1,6 +1,10 @@
 controller:
   replicaCount: 1
+  hostNetwork: true
+  dnsPolicy: ClusterFirstWithHostNet
 
+  extraArgs:
+    enable-ssl-passthrough: true
   # k3s'de Traefik varsayılan olarak gelir, çakışmayı önlemek için
   # k3s'i --disable=traefik flag'i ile kur veya traefik'i devre dışı bırak
   ingressClassResource:
