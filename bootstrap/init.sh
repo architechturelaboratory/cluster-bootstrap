@@ -10,7 +10,6 @@
 # ============================================================
 set -euo pipefail
 
-ARGOCD_VERSION="2.10.7"
 ARGOCD_NAMESPACE="argocd"
 GITHUB_REPO="${GITHUB_REPO:-https://github.com/architechturelaboratory/cluster-bootstrap.git}"
 
@@ -43,13 +42,12 @@ apply_namespaces() {
 
 # ── ArgoCD kur ──────────────────────────────────────────────
 install_argocd() {
-  info "ArgoCD ${ARGOCD_VERSION} kuruluyor..."
+  info "ArgoCD kuruluyor..."
   helm repo add argo https://argoproj.github.io/argo-helm --force-update
   helm repo update
 
   helm upgrade --install argocd argo/argo-cd \
     --namespace "$ARGOCD_NAMESPACE" \
-    --version "$ARGOCD_VERSION" \
     --values argocd/install/values.yaml \
     --wait \
     --timeout 5m
@@ -57,6 +55,16 @@ install_argocd() {
   info "ArgoCD kuruldu. Hazır olana kadar bekleniyor..."
   kubectl rollout status deployment/argocd-server \
     -n "$ARGOCD_NAMESPACE" --timeout=180s
+}
+
+verify_ingress() {
+  info "Ingress external connectivity test ediliyor..."
+
+  if ! curl -sk https://localhost -H "Host: argocd.dev.local" | grep -q "<html"; then
+    warn "Ingress dış erişim FAIL — k3d LB/NodePort problemi olabilir"
+  else
+    info "Ingress external erişim OK"
+  fi
 }
 
 # ── Repo credentials (private repo ise) ─────────────────────
