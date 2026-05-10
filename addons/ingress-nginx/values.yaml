@@ -1,10 +1,6 @@
 controller:
   replicaCount: 1
 
-  # ssl-passthrough — ArgoCD kendi TLS'ini yönetir
-  extraArgs:
-    enable-ssl-passthrough: ""
-
   config:
     use-forwarded-headers: "true"
     ssl-redirect: "true"

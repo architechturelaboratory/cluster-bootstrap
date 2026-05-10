@@ -10,11 +10,10 @@ server:
     tls: true
     annotations:
       cert-manager.io/cluster-issuer: selfsigned-issuer
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 
 configs:
   params:
-    server.insecure: false
+    server.insecure: true
   cm:
     # k3s local dev — kısa sync intervalleri
     timeout.reconciliation: 30s
