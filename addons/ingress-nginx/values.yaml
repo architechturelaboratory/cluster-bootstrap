@@ -1,9 +1,12 @@
 controller:
   replicaCount: 1
 
-  # ssl-passthrough — ArgoCD kendi TLS'ini yönetir
-  extraArgs:
-    enable-ssl-passthrough: ""
+  config:
+    use-forwarded-headers: "true"
+    ssl-redirect: "true"
+
+  metrics:
+    enabled: true
 
   ingressClassResource:
     name: nginx
@@ -28,18 +31,6 @@ controller:
     limits:
       cpu: 500m
       memory: 256Mi
-
-  # Prometheus metriklerini aç
-  metrics:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-      namespace: monitoring
-
-  config:
-    # Dev log level
-    error-log-level: warn
-    use-forwarded-headers: "true"
 
 defaultBackend:
   enabled: false
