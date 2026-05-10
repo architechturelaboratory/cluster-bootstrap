@@ -17,10 +17,6 @@ controller:
   # k3d cluster --port "80:30080@loadbalancer" --port "443:30443@loadbalancer" ile eşleşir
   service:
     type: LoadBalancer
-    ports:
-      - name: http
-        port: 80
-        targetPort: 8080
 
   # Dev için tek node'da çalışacak şekilde
   tolerations:
