@@ -1,7 +1,17 @@
 controller:
   replicaCount: 1
-  # k3s'de Traefik varsayılan olarak gelir, çakışmayı önlemek için
-  # k3s'i --disable=traefik flag'i ile kur veya traefik'i devre dışı bırak
+  kind: DaemonSet
+
+  hostPort:
+    enabled: true
+    ports:
+      http: 80
+      https: 443
+
+  # ssl-passthrough — ArgoCD kendi TLS'ini yönetir
+  extraArgs:
+    enable-ssl-passthrough: ""
+
   ingressClassResource:
     name: nginx
     enabled: true
@@ -9,7 +19,7 @@ controller:
 
   # k3s local dev — LoadBalancer yerine NodePort veya HostPort kullan
   service:
-    type: LoadBalancer  # k3s kendi LoadBalancer'ını sağlar (Klipper)
+    type: LoadBalancer
 
   # Dev için tek node'da çalışacak şekilde
   tolerations:
