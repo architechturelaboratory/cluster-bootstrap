@@ -9,7 +9,7 @@ metadata:
 spec:
   project: platform
   source:
-    repoURL: https://github.com/YOUR_ORG/cluster-bootstrap.git  # <-- değiştir
+    repoURL: https://github.com/architechturelaboratory/cluster-bootstrap.git
     targetRevision: HEAD
     path: addons/cert-manager/issuer
   destination:
