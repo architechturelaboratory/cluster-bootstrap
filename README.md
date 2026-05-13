@@ -1,7 +1,21 @@
 # cluster-bootstrap
 
 k3s single-cluster GitOps bootstrap repo. ArgoCD App of Apps pattern ile tüm platform addon'larını yönetir.
+```bash
+k3d cluster create microservices \
+  --port "80:80@loadbalancer" \
+  --port "443:443@loadbalancer" \
+  --k3s-arg="--disable=traefik@server:0" \
+  --image rancher/k3s:v1.27.4-k3s1
 
+applicationlara bakma
+kubectl get applications -n argocd -w
+kubectl get application ingress-nginx -n argocd -w
+sorunlu olanla ilgili info alma
+kubectl describe application vault -n argocd | grep -A 20 "Status:"
+sorunlu pod loglarına bakmaca
+kubectl describe pod ingress-nginx-controller-qrnk6 -n ingress-nginx | grep -A5 Events
+```
 ## Hızlı Başlangıç
 
 ### 1. Ön koşullar

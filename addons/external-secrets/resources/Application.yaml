@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager-issuer
+  name: external-secrets-resources
   namespace: argocd
   annotations:
-    # Hem vault hem ESO hazır olmalı
+    # ESO ve Vault hazır olduktan sonra (Wave 0) çalışmalı
     argocd.argoproj.io/sync-wave: "1"
 spec:
   project: platform
   source:
     repoURL: https://github.com/architechturelaboratory/cluster-bootstrap.git
     targetRevision: HEAD
-    path: addons/cert-manager/issuer
+    path: addons/external-secrets/resources
   destination:
     server: https://kubernetes.default.svc
-    namespace: cert-manager
+    namespace: external-secrets
   syncPolicy:
     automated:
       prune: true

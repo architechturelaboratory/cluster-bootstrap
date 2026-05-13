@@ -2,13 +2,24 @@ global:
   enabled: true
 
 server:
-  # Dev mode: veriler bellekte tutulur, restart'ta sıfırlanır.
-  # Kalıcı veri istiyorsan dev: false yap ve storage bölümünü aç.
+  # Dev mode'da veriler bellekte tutulur, restart'ta sıfırlanır.
+  # Persistent storage ekleyerek dev mode'da bile verileri koruyoruz.
   dev:
     enabled: true
-    devRootToken: "root"   # Bu token ile her şeye erişebilirsin — sadece dev!
+    devRootToken: "root"
 
-  # Dev mode'da tek replica yeterli
+  dataStorage:
+    enabled: true
+    size: 1Gi
+    storageClass: local-path
+    mountPath: "/vault/data"
+
+  # Dev mode'da storage config (config.hcl) ekleyelim
+  extraConfig: |
+    ui = true
+    storage "file" {
+      path = "/vault/data"
+    }
   replicas: 1
 
   ingress:
