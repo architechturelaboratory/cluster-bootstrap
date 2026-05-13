@@ -4,7 +4,7 @@ metadata:
   name: cert-manager-issuer
   namespace: argocd
   annotations:
-    # Hem vault hem ESO hazır olmalı
+    # cert-manager (wave 0) kurulduktan sonra çalışsın
     argocd.argoproj.io/sync-wave: "1"
 spec:
   project: platform

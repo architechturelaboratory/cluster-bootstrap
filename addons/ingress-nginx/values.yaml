@@ -17,7 +17,6 @@ controller:
   # k3d cluster --port "80:30080@loadbalancer" --port "443:30443@loadbalancer" ile eşleşir
   service:
     type: LoadBalancer
-    externalTrafficPolicy: Local
 
   # Dev için tek node'da çalışacak şekilde
   tolerations:

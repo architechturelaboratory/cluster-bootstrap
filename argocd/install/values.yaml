@@ -6,12 +6,8 @@ server:
   ingress:
     enabled: true
     ingressClassName: nginx
-    hosts:
-      - argocd.dev.local
-    tls:
-      - secretName: argocd-server-tls
-        hosts:
-          - argocd.dev.local
+    hostname: argocd.dev.local
+    tls: true
     annotations:
       cert-manager.io/cluster-issuer: selfsigned-issuer
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
